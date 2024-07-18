@@ -10,14 +10,16 @@ public class Request {
     private Long id;
 
     private int quantity;
+    private Double unityValue;
     private Double totalValue;
-    private String userId;
+    private Long userId;
 
     public Request() { }
 
-    public Request(Long id, int quantity, Double totalValue, String userId) {
+    public Request(Long id, int quantity, Double unityValue, Double totalValue, Long userId) {
         this.id = id;
         this.quantity = quantity;
+        this.unityValue = unityValue;
         this.totalValue = totalValue;
         this.userId = userId;
     }
@@ -46,11 +48,19 @@ public class Request {
         this.totalValue = totalValue;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Double getUnityValue() {
+        return unityValue;
+    }
+
+    public void setUnityValue(Double unityValue) {
+        this.unityValue = unityValue;
     }
 }

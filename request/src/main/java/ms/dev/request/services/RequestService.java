@@ -1,13 +1,16 @@
 package ms.dev.request.services;
 
 import ms.dev.request.dtos.RequestDTO;
+import ms.dev.request.dtos.RequestResponseDTO;
 import ms.dev.request.entities.Request;
 import ms.dev.request.repositories.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,45 +18,62 @@ public class RequestService {
     @Autowired
     private RequestRepository requestRepository;
 
-    public Page<Request> getAll(int page, int size) {
+    public Page<Request> findAll(int page, int size) {
         return requestRepository.findAll(PageRequest.of(page, size));
     }
 
-    public Request findById(Long id) {
-        return requestRepository.findById(id).get();
+    public List<Request> findByUserId(Long userId) {
+        return requestRepository.findByUserId(userId);
     }
 
-    public void create (RequestDTO item) {
-        var data = new Request();
+    public RequestResponseDTO  create (RequestDTO requestDTO) {
+        Request data = new Request();
 
-        data.setQuantity(item.quantity());
-        data.setTotalValue(item.totalValue());
-        data.setUserId(item.userId());
+        Double total =  requestDTO.quantity() * requestDTO.unityValue();
 
-        requestRepository.save(data);
+        data.setQuantity(requestDTO.quantity());
+        data.setUnityValue(requestDTO.unityValue());
+        data.setTotalValue(total);
+        data.setUserId(requestDTO.userId());
+
+        Request saved = requestRepository.save(data);
+        return convertToDto(saved);
     }
 
-    public Request update (RequestDTO item) {
-        Optional<Request> selectRequest = requestRepository.findById(item.id());
+    public RequestResponseDTO update (Long id, RequestDTO requestDTO) {
+        Optional<Request> selectRequest = requestRepository.findById(id);
 
         if (selectRequest.isPresent()) {
+            Double total =  requestDTO.quantity() * requestDTO.unityValue();
+
             Request dataItem = selectRequest.get();
-            dataItem.setQuantity(item.quantity());
-            dataItem.setTotalValue(item.totalValue());
+            dataItem.setQuantity(requestDTO.quantity());
+            dataItem.setUnityValue(requestDTO.unityValue());
+            dataItem.setTotalValue(total);
 
-            return requestRepository.save(dataItem);
+            Request saved =  requestRepository.save(dataItem);
+            return convertToDto(saved);
         }
 
-        return null;
+        throw new RuntimeException("Request not found with id " + id);
     }
 
-    public void delete (RequestDTO item) {
-        Optional<Request> selectRequest = requestRepository.findById(item.id());
-
-        if (selectRequest.isPresent()) {
-            requestRepository.deleteById(item.id());
+    public void delete(Long id) {
+        if (requestRepository.existsById(id)) {
+            requestRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Request not found with id " + id);
         }
+    }
 
+    private RequestResponseDTO convertToDto(Request request) {
+        return new RequestResponseDTO(
+                request.getId(),
+                request.getQuantity(),
+                request.getUnityValue(),
+                request.getTotalValue(),
+                request.getUserId()
+        );
     }
     
 }
