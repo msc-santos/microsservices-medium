@@ -11,13 +11,15 @@ public class Request {
 
     private int quantity;
     private Double totalValue;
+    private String userId;
 
     public Request() { }
 
-    public Request(Long id, int quantity, Double totalValue) {
+    public Request(Long id, int quantity, Double totalValue, String userId) {
         this.id = id;
         this.quantity = quantity;
         this.totalValue = totalValue;
+        this.userId = userId;
     }
 
     public Long getId() {
@@ -42,5 +44,13 @@ public class Request {
 
     public void setTotalValue(Double totalValue) {
         this.totalValue = totalValue;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
