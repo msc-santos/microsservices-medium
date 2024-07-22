@@ -1,5 +1,6 @@
 package ms.dev.request.services;
 
+import ms.dev.request.ProductFeignCLient;
 import ms.dev.request.dtos.RequestDTO;
 import ms.dev.request.dtos.RequestResponseDTO;
 import ms.dev.request.entities.Request;
@@ -22,6 +23,8 @@ public class RequestService {
 
     @Autowired
     private RequestProductRepository requestProductRepository;
+
+    private ProductFeignCLient productFeignCLient;
 
     public Page<Request> findAll(int page, int size) {
         return requestRepository.findAll(PageRequest.of(page, size));
