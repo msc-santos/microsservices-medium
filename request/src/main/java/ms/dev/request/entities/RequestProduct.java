@@ -1,5 +1,6 @@
 package ms.dev.request.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,8 +10,9 @@ public class RequestProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "request_id", nullable = false)
+    @JsonBackReference
     private Request request;
 
     private Long productId;

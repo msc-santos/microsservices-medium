@@ -1,6 +1,11 @@
 package ms.dev.request.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "requests")
@@ -13,6 +18,10 @@ public class Request {
     private Double unityValue;
     private Double totalValue;
     private Long userId;
+
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private Set<RequestProduct> requestProducts = new HashSet<>();
 
     public Request() { }
 
@@ -62,5 +71,13 @@ public class Request {
 
     public void setUnityValue(Double unityValue) {
         this.unityValue = unityValue;
+    }
+
+    public Set<RequestProduct> getRequestProducts() {
+        return requestProducts;
+    }
+
+    public void setRequestProducts(Set<RequestProduct> requestProducts) {
+        this.requestProducts = requestProducts;
     }
 }

@@ -3,6 +3,8 @@ package ms.dev.request.services;
 import ms.dev.request.dtos.RequestDTO;
 import ms.dev.request.dtos.RequestResponseDTO;
 import ms.dev.request.entities.Request;
+import ms.dev.request.entities.RequestProduct;
+import ms.dev.request.repositories.RequestProductRepository;
 import ms.dev.request.repositories.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,9 @@ public class RequestService {
     @Autowired
     private RequestRepository requestRepository;
 
+    @Autowired
+    private RequestProductRepository requestProductRepository;
+
     public Page<Request> findAll(int page, int size) {
         return requestRepository.findAll(PageRequest.of(page, size));
     }
@@ -28,6 +33,7 @@ public class RequestService {
 
     public RequestResponseDTO  create (RequestDTO requestDTO) {
         Request data = new Request();
+        RequestProduct requestProduct = new RequestProduct();
 
         Double total =  requestDTO.quantity() * requestDTO.unityValue();
 
@@ -37,6 +43,11 @@ public class RequestService {
         data.setUserId(requestDTO.userId());
 
         Request saved = requestRepository.save(data);
+
+        requestProduct.setRequest(saved);
+        requestProduct.setProductId(requestDTO.productId());
+        requestProductRepository.save(requestProduct);
+
         return convertToDto(saved);
     }
 
