@@ -27,9 +27,7 @@ public class RequestController {
 
     @GetMapping(value = "/user/{userId}")
     public ResponseEntity<List<Request>> getByUserId(@PathVariable Long userId) {
-
-        List<Request> requestsByUserId = requestService.findByUserId(userId);
-        return ResponseEntity.ok(requestsByUserId);
+        return ResponseEntity.ok(requestService.findByUserId(userId));
     }
 
     @PostMapping

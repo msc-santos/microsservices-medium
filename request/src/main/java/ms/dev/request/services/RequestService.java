@@ -5,12 +5,12 @@ import ms.dev.request.dtos.RequestDTO;
 import ms.dev.request.dtos.RequestResponseDTO;
 import ms.dev.request.entities.Request;
 import ms.dev.request.entities.RequestProduct;
+import ms.dev.request.exceptions.EventNotFoundExecption;
 import ms.dev.request.repositories.RequestProductRepository;
 import ms.dev.request.repositories.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +31,13 @@ public class RequestService {
     }
 
     public List<Request> findByUserId(Long userId) {
-        return requestRepository.findByUserId(userId);
+        List<Request> requests = requestRepository.findByUserId(userId);
+
+        if (requests.isEmpty()) {
+            throw new EventNotFoundExecption("No requests found for user with id " + userId);
+        }
+
+        return requests;
     }
 
     public RequestResponseDTO  create (RequestDTO requestDTO) {
