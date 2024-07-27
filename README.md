@@ -6,10 +6,10 @@ de microsserviços em meus posts publicados no Medium.
 ## Features 🚀
 
 - [x] Microsserviço de produtos 
-- [x] Microsserviço de pedidos 
+- [x] Microsserviço de pedidos
+- [x] Comunicação entre microsserviços 
 - [ ] API Gateway 
 - [ ] Servidor Eureka 
 - [ ] Autenticação de usuários 
 - [ ] Balanceamento de carga entre serviços 
 - [ ] Circuit Breaker 
-- [ ] Comunicação entre microsserviços 
