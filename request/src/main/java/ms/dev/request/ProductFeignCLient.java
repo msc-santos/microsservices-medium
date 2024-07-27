@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Component
 @FeignClient(name = "product", path = "/products", url = "localhost:8000")
 public interface ProductFeignCLient {
-    @GetMapping(value = "/{id}")
-    ResponseEntity<Product> findById(@PathVariable Long id);
+  @GetMapping(value = "/{id}")
+  ResponseEntity<Product> findById(@PathVariable Long id);
 }
